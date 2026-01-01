@@ -1,6 +1,6 @@
 #include "webclient.h"
 #include "toyyibPay.h"
-#include "logger.h"
+#include "logger/logger.h"
 
 std::string ToyyibPay::Process::CreateBill(ToyyibPay::Trans &rec) const {
     std::string res;
@@ -28,9 +28,9 @@ std::string ToyyibPay::Process::CreateBill(ToyyibPay::Trans &rec) const {
             }
         }
     } catch (std::exception const &e) {
-        ShowLog(fmt::format("CreateBill exception: {}", e.what()));
+        LOG_ERROR(fmt::format("CreateBill exception: {}", e.what()));
     } catch (...) {
-        ShowLog(fmt::format("CreateBill unknown exception"));
+        LOG_ERROR(fmt::format("CreateBill unknown exception"));
     }
     auto msg = boost::replace_all_copy(res, "\t", "");
     return "error:" + msg;
@@ -73,9 +73,9 @@ std::string ToyyibPay::Process::CreateCategory(const std::string &code, const st
             if (str) return str->c_str();
         }
     } catch (std::exception &e) {
-        ShowLog(fmt::format("Return error exception: {}", e.what()));
+        LOG_ERROR(fmt::format("Return error exception: {}", e.what()));
     } catch (...) {
-        ShowLog("Return error ");
+        LOG_ERROR("Return error ");
     }
     ShowLog("parse response: Nil");
     return "";
