@@ -87,7 +87,7 @@ std::unordered_map<std::string, std::string> ToyyibPay::Process::ReceiveNotifica
         }
         return keyVal;
     } else {
-        ShowLog(fmt::format("Incorrect format or separator empty: sep: {}", sep));
+        LOG_INFO("Incorrect format or separator empty: sep: {}", sep);
         //record missing trans:
         auto authDb = std::make_unique<AuthorizationDB>();
         authDb->Open();

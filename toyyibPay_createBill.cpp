@@ -9,7 +9,7 @@ std::string ToyyibPay::Process::CreateBill(ToyyibPay::Trans &rec) const {
         auto body = ConvertToUrlEncodedBody(rec.GetArray());
         auto [response, responseCode] = WebClient::Post(fmt::format("https://{host}/index.php/api/createBill", fmt::arg("host", host)), body);
         res = response;
-        ShowLog(fmt::format("Return from toyyibpay::createBill: {}: {}", responseCode, response));
+        LOG_INFO("Return from toyyibpay::createBill: {}: {}", responseCode, response);
         auto jv = boost::json::parse(response);
         if (jv.if_array()) {
             for (auto &x : *jv.if_array()) {
@@ -28,9 +28,9 @@ std::string ToyyibPay::Process::CreateBill(ToyyibPay::Trans &rec) const {
             }
         }
     } catch (std::exception const &e) {
-        LOG_ERROR(fmt::format("CreateBill exception: {}", e.what()));
+        LOG_ERROR("CreateBill exception: {}", e.what());
     } catch (...) {
-        LOG_ERROR(fmt::format("CreateBill unknown exception"));
+        LOG_ERROR("CreateBill unknown exception");
     }
     auto msg = boost::replace_all_copy(res, "\t", "");
     return "error:" + msg;
@@ -43,7 +43,7 @@ boost::json::value jv0 = {
     {"catdescription", name}};
 
 auto jv2 = boost::json::serialize(jv0);
-ShowLog("\njv2 = " << jv2 << std::endl;
+LOG_INFO("\njv2 = " << jv2 << std::endl;
 */
 
 std::string ToyyibPay::Process::CreateCategory(const std::string &code, const std::string &name) const {
@@ -58,7 +58,7 @@ std::string ToyyibPay::Process::CreateCategory(const std::string &code, const st
 
         auto url = fmt::format("https://{host}/index.php/api/createCategory", fmt::arg("host", host));
         auto [response, responseCode] = WebClient::Post(url, jsonString);
-        ShowLog(fmt::format("from toyyibpay::createCategory, RESPONSE: {}: {}", responseCode, response));
+        LOG_INFO("from toyyibpay::createCategory, RESPONSE: {}: {}", responseCode, response);
         auto jv = boost::json::parse(response);
         if (jv.if_array()) {
             auto jo = jv.if_array();
@@ -73,11 +73,11 @@ std::string ToyyibPay::Process::CreateCategory(const std::string &code, const st
             if (str) return str->c_str();
         }
     } catch (std::exception &e) {
-        LOG_ERROR(fmt::format("Return error exception: {}", e.what()));
+        LOG_ERROR("Return error exception: {}", e.what());
     } catch (...) {
         LOG_ERROR("Return error ");
     }
-    ShowLog("parse response: Nil");
+    LOG_INFO("parse response: Nil");
     return "";
 }
 
