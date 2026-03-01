@@ -27,7 +27,7 @@ std::string ToyyibPay::Process::CreateBill(ToyyibPay::Trans &rec) const {
                 return std::string("error:") + str->c_str();
             }
         }
-    } catch (const std::exception const &e) {
+    } catch (const std::exception &e) {
         LOG_ERROR("CreateBill exception: {}", e.what());
     } catch (...) {
         LOG_ERROR("CreateBill unknown exception");
