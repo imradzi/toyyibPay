@@ -27,7 +27,7 @@ std::string ToyyibPay::Process::CreateBill(ToyyibPay::Trans &rec) const {
                 return std::string("error:") + str->c_str();
             }
         }
-    } catch (std::exception const &e) {
+    } catch (const std::exception const &e) {
         LOG_ERROR("CreateBill exception: {}", e.what());
     } catch (...) {
         LOG_ERROR("CreateBill unknown exception");
@@ -72,7 +72,7 @@ std::string ToyyibPay::Process::CreateCategory(const std::string &code, const st
             auto str = (*jv.if_object())["CategoryCode"].if_string();
             if (str) return str->c_str();
         }
-    } catch (std::exception &e) {
+    } catch (const std::exception &e) {
         LOG_ERROR("Return error exception: {}", e.what());
     } catch (...) {
         LOG_ERROR("Return error ");
