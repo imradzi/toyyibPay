@@ -1,6 +1,6 @@
 #include "webclient.h"
 #include "toyyibPay.h"
-#include "logger.h"
+#include "logger/logger.h"
 
 std::string ToyyibPay::Process::CreateBill(ToyyibPay::Trans &rec) const {
     std::string res;
@@ -27,7 +27,7 @@ std::string ToyyibPay::Process::CreateBill(ToyyibPay::Trans &rec) const {
                 return std::string("error:") + str->c_str();
             }
         }
-    } catch (std::exception const &e) {
+    } catch (const std::exception &e) {
         LOG_ERROR("CreateBill exception: {}", e.what());
     } catch (...) {
         LOG_ERROR("CreateBill unknown exception");
@@ -35,16 +35,6 @@ std::string ToyyibPay::Process::CreateBill(ToyyibPay::Trans &rec) const {
     auto msg = boost::replace_all_copy(res, "\t", "");
     return "error:" + msg;
 }
-
-/*
-boost::json::value jv0 = {
-    {"userSecretKey", secretKey},
-    {"catname", code},
-    {"catdescription", name}};
-
-auto jv2 = boost::json::serialize(jv0);
-LOG_INFO("\njv2 = {}", jv2);
-*/
 
 std::string ToyyibPay::Process::CreateCategory(const std::string &code, const std::string &name) const {
     try {
@@ -72,7 +62,7 @@ std::string ToyyibPay::Process::CreateCategory(const std::string &code, const st
             auto str = (*jv.if_object())["CategoryCode"].if_string();
             if (str) return str->c_str();
         }
-    } catch (std::exception &e) {
+    } catch (const std::exception &e) {
         LOG_ERROR("Return error exception: {}", e.what());
     } catch (...) {
         LOG_ERROR("Return error ");
